@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="utf-8"/>
+		<title>Transform 2D 3D ...!  </title>
+	</head>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#e7f5f6;}
+        .overlay{
+            display: flex;
+            align-items:center;
+            justify-content: center;
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background-color:rgba(0,0,0,0.3);
+            z-index: 5;
+            transition:0.6s ease-in-out;
+        }
+        .overlay button{
+            background-color:#fff;
+            border:none;
+            color:#000;
+            width:250px;
+            height:50px;
+            cursor:pointer;
+            font-size:25px;
+            border-radius: 5px;
+        }
+        .select{
+            margin-top:10px;
+            text-align: center;
+            
+        }
+        .select select{
+            width:350px;
+            height:30px;
+            font-size:20px;
+            border-radius:5px;
+            background-color:#88c3f3;
+            color:#fff;
+            border:none;
+            cursor:pointer;
+        }
+        
+        input[type="range"],input[type="text"]{
+            display: inline-block;
+            margin-top: 10px;
+        }
+        input[type="range"]:focus{
+            outline:none;
+        }
+        
+       
+        .container{
+            border:1px solid #000;
+            min-height: 275px;
+            width:60%;
+            float: right;
+            text-align: center;
+            margin-top: 10px;
+            overflow:hidden;
+            margin-right: 5px;
+            
+        }
+        .container .element{
+            width:250px;
+            height:250px;
+            border:1px solid #ccc;
+            margin:10px auto;
+            transition:all 0.7s ease-in-out;
+        }
+        
+        .container label{
+            display: inline-block;
+            width:20px;
+            height:20px;
+            border:1px solid #000;
+            margin:5px 5px;
+            cursor: pointer
+        }
+        #redlbl{background:red}
+        #greenlbl{background:green}
+        #bluelbl{background-color:blue}
+        #graylbl{background-color:gray}
+        
+        #red:checked ~ .element{background: red}
+        #green:checked ~ .element{background: green}
+        #blue:checked ~ .element{background: blue}
+        #gray:checked ~ .element{background: gray}
+        
+        .control{
+            width:39%;
+            margin-top:100px;
+            float:left;
+            text-align: center;
+            font-size:20px;
+            font-weight:bold;
+        }
+        
+         .sliderone{
+            -moz-appearance:none;
+            -webkit-appearance:none;
+            outline:none;
+            width:40%;
+            height:20px;
+            background: #88c3f3;
+        }
+        .sliderone::-moz-range-thumb{
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #fff; /* Green background */
+            cursor: pointer; 
+        }
+        
+        .sliderone::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            border:1px solid #000;
+            border-radius:3px;
+            background: #fff; /* Green background */
+            cursor: pointer; 
+        }
+        
+       
+    </style>
+ 
+    
+	<body>
+        <div class="overlay">
+        <button id="btn" >Start Transform</button>
+        </div>
+        <div class="select">
+            <select id="sel" name="list">
+                <option value="0" selected>Rotate</option>
+                <option value="1">Scale</option>
+                <option value="2">Translate</option>
+                <option value="3">Skew</option>
+            </select>
+            <select id="sel1" name="list1">
+                <option value="0">X-axis</option>
+                <option value="1">Y-axis</option>
+                <option value="2">Z-axis</option>
+            </select>
+        </div>
+        <div class="container">
+                <input id="red" type="radio" name="radio" hidden checked>
+                <input id="green" type="radio" name="radio" hidden>
+                <input id="blue" type="radio" name="radio" hidden>
+                <input id="gray" type="radio" name="radio" hidden>
+                <div class="element"></div>
+                <label for="red" id="redlbl"></label>
+                <label for="green" id="greenlbl"></label>
+                <label for="blue" id="bluelbl"></label>
+                <label for="gray" id="graylbl"></label>
+            </div>
+        <div class="control">
+            <div class="slider">
+                <label for="range">Range: </label>
+                <input id="range" class="sliderone" type="range" value="0"  name="range"/>
+                <label id="valRange">0</label>
+            </div>
+            
+            <div class="slider">
+                <label for="perspective">Perspective: </label>
+                <input type="range" class="sliderone" id="perspective" value="0" min="100" max="1000" />
+                <label id="valPer"></label>
+            </div>
+        </div>
+        
+        <script>
+            
+            var optVal = 0;
+            var optVal1 = 0;
+            var rag = document.getElementById("range");
+            var rag2 = document.getElementById("perspective");
+            var lbl1 = document.getElementById("valRange");
+            var lbl2 = document.getElementById("valPer");
+            var select = document.getElementById("sel");
+            var select1 = document.getElementById("sel1");
+            
+            var cont = document.getElementsByClassName("container")[0];
+            var el = document.getElementsByClassName("element")[0];
+            
+            lbl1.innerHTML = rag.value;
+            lbl2.innerHTML = rag2.value+"px";
+            cont.style.perspective = rag2.value+"px";
+            // change in transform property
+            select.onchange = function() {
+                'use strict';
+                optVal = select.options[select.selectedIndex].value;
+                console.log(optVal);
+            };
+            // change between X-axis and Y-axis
+             select1.onchange = function() {
+                'use strict';
+                optVal1 = select1.options[select1.selectedIndex].value;
+                console.log(optVal1);
+            };
+            // change in perspective value
+            rag2.onchange = function() {
+                'use strict';
+                cont.style.perspective = rag2.value+"px";
+                lbl2.textContent = rag2.value +"px";
+            };
+            // change in transform property
+            rag.onchange = function() {
+                'use strict';
+                if(optVal==0 && optVal1==0){
+                    rag.min = 0;
+                    rag.max = 360;
+                    el.style.transform = "rotateX("+rag.value+"deg)";
+                    lbl1.innerHTML=rag.value+"deg";
+                }
+                if(optVal==0 && optVal1==1){
+                    rag.min = 0;
+                    rag.max = 360;
+                    el.style.transform = "rotateY("+rag.value+"deg)";
+                    lbl1.innerHTML=rag.value+"deg";
+                }
+                if(optVal==0 && optVal1==2){
+                    rag.min = 0;
+                    rag.max = 360;
+                    el.style.transform = "rotateZ("+rag.value+"deg)";
+                    lbl1.innerHTML=rag.value+"deg";
+                }
+                else if(optVal==1 && optVal1==0){
+                    rag.min = 0;
+                    rag.max = 5;
+                    el.style.transform = "scaleX("+rag.value+")";
+                    lbl1.innerHTML=rag.value+"times";
+                }
+                else if(optVal==1 && optVal1==1){
+                    rag.min = 0;
+                    rag.max = 5;
+                    el.style.transform = "scaleY("+rag.value+")";
+                    lbl1.innerHTML=rag.value+"times";
+                }
+                else if(optVal==1 && optVal1==2){
+                    rag.min = 0;
+                    rag.max = 5;
+                    el.style.transform = "scaleZ("+rag.value+")";
+                    lbl1.innerHTML=rag.value+"times";
+                }
+                else if(optVal==2 && optVal1==0){
+                    rag.min = -500;
+                    rag.max = 500;
+                    el.style.transform = "translateX("+rag.value+"px)";
+                    lbl1.innerHTML=rag.value+"px";
+                }
+                else if(optVal==2 && optVal1==1){
+                    rag.min = -500;
+                    rag.max = 500;
+                    el.style.transform = "translateY("+rag.value+"px)";
+                    lbl1.innerHTML=rag.value+"px";
+                }
+                else if(optVal==2 && optVal1==2){
+                    rag.min = -500;
+                    rag.max = 500;
+                    el.style.transform = "translateZ("+rag.value+"px)";
+                    lbl1.innerHTML=rag.value+"px";
+                }
+                else if(optVal==3 && optVal1==0){
+                    rag.min = 0;
+                    rag.max = 360;
+                    el.style.transform = "skewX("+rag.value+"deg)";
+                    lbl1.innerHTML=rag.value+"deg";
+                }
+                else if(optVal==3 && optVal1==1){
+                    rag.min = 0;
+                    rag.max = 360;
+                    el.style.transform = "skewY("+rag.value+"deg)";
+                    lbl1.innerHTML=rag.value+"deg";
+                }
+            };
+            
+            document.getElementById("btn").onclick= function() {
+                'use strict';
+                document.getElementsByClassName("overlay")[0].style.opacity=0;
+                document.getElementsByClassName("overlay")[0].style.left="-100%";
+            };
+        </script>
+
+	</body>
+</html>
