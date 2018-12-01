@@ -1,5 +1,5 @@
 ## Transform-properties
-#try all transform properties
+# try all transform properties
 Transform Properties:
 scale
 translate
